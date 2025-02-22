@@ -1,0 +1,101 @@
+.project-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 950px;
+    gap: 24px;
+    .form-entry-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        gap: 6px;
+        .form-entry-checkbox-row {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            label {
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+        .form-label {
+            font-size: 17px;
+            font-weight: 700;
+        }
+        textarea {
+            min-width: 950px;
+            max-width: 950px;
+            width: 950px;
+            max-height: 200px;
+            min-height: 200px;
+            height: 200px;
+            height: 26px;
+            padding: 4px 12px;
+            font-size: 16px;
+        }
+        .form-text-input {
+            width: 100%;
+            height: 26px;
+            padding: 4px 12px;
+            font-size: 16px;
+        }
+        .form-url-input {
+            width: 100%;
+            height: 26px;
+            padding: 4px 12px;
+            font-size: 16px;
+        }
+        .form-checkbox {
+            align-self: flex-start;
+            height: 20px;
+        }
+        input[type="checkbox"]{
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+          }
+    }
+    .form-title {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        p {
+            font-size: 18px;
+            color: grey;
+        }
+    }
+
+    .form-submit-row {
+        padding: 0px 20px 10px 10px;
+        margin: auto;
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        .form-submit-button {
+            background-color: #0072b1;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 20px;
+            color: white;
+            padding: 6px 20px 6px 20px;
+            width: 120px;
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+            transition-duration: 0.3s;
+        }
+        .form-submit-button:hover {
+            background-color: #34a5e2;
+            cursor: pointer;
+        }
+    }
+}
+
+.project-form-wrapper {
+    background-color: white;
+    padding: 16px 55px 30px 30px;
+    height: 100%;
+    border: transparent;
+    border-radius: 12px;
+}

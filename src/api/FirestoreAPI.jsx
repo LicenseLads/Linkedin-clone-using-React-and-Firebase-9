@@ -11,6 +11,7 @@ import {
   deleteDoc,
   orderBy,
   serverTimestamp,
+  limit,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -19,6 +20,18 @@ let userRef = collection(firestore, "users");
 let likeRef = collection(firestore, "likes");
 let commentsRef = collection(firestore, "comments");
 let connectionRef = collection(firestore, "connections");
+let projectsRef = collection(firestore, "projects");
+
+export const postProject = (object, callback) => {
+  addDoc(projectsRef, object)
+    .then(() => {
+      toast.success("Project posted successfully!");
+      callback();
+    })
+    .catch(() => {
+      toast.error("Error uploading the project! Please try again.")
+    })
+}
 
 export const postStatus = (object) => {
   addDoc(postsRef, object)
@@ -41,6 +54,17 @@ export const getStatus = (setAllStatus) => {
   });
 };
 
+export const getProjects = (setAllProjects, id) => {
+  const q = query(projectsRef, orderBy("updated_at"), where("author", "==", id), limit(5));
+  onSnapshot(q, (response) => {
+    setAllProjects(
+      response.docs.map((docs) => {
+        return { ...docs.data(), id: docs.id };
+      })
+    )
+  })
+}
+
 export const getAllUsers = (setAllUsers) => {
   onSnapshot(userRef, (response) => {
     setAllUsers(
@@ -52,7 +76,7 @@ export const getAllUsers = (setAllUsers) => {
 };
 
 export const getSingleStatus = (setAllStatus, id) => {
-  const singlePostQuery = query(postsRef, where("userID", "==", id));
+  const singlePostQuery = query(postsRef, where("userID", "==", id), limit(10));
   onSnapshot(singlePostQuery, (response) => {
     setAllStatus(
       response.docs.map((docs) => {

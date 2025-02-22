@@ -1,0 +1,31 @@
+
+  .switch-container {
+    display: flex;
+    background-color: white;
+    align-items: center;
+    border-radius: 35px;
+    width: max-content;
+    height: max-content;
+  }
+  
+  .switch-item {
+    height: 40px;
+    width: 80px;
+    display: flex;
+    border-radius: 35px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .switch-text {
+    font-size: 14px;
+  }
+  
+  .switch-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

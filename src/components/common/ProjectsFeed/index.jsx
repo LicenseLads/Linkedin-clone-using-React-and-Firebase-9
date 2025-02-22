@@ -4,16 +4,22 @@ import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import ModalComponent from "../Modal";
 import { uploadPostImage } from "../../../api/ImageUpload";
 import { getUniqueID } from "../../../helpers/getUniqueId";
-import PostsCard from "../PostsCard";
 import "./index.scss";
+import { useNavigate } from "react-router-dom";
 
-export default function PostStatus({ currentUser }) {
+export default function ProjectFeed({ currentUser }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [allStatuses, setAllStatus] = useState([]);
   const [currentPost, setCurrentPost] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [postImage, setPostImage] = useState("");
+
+  const navigate = useNavigate();
+
+  const goToRoute = (route) => {
+    navigate(route);
+  };
 
   const sendStatus = async () => {
     let object = {
@@ -48,26 +54,25 @@ export default function PostStatus({ currentUser }) {
   }, []);
 
   return (
-    <div className="post-status-main">
+    <div className="project-feed-main">
       <div className="user-details">
         <img src={currentUser?.imageLink} alt="imageLink" />
         <p className="name">{currentUser?.name}</p>
         <p className="headline">{currentUser?.headline}</p>
       </div>
-      <div className="post-status">
+      <div className="project-status">
         <img
-          className="post-image"
+          className="project-image"
           src={currentUser?.imageLink}
           alt="imageLink"
         />
         <button
-          className="open-post-modal"
+          className="open-project-modal"
           onClick={() => {
-            setModalOpen(true);
-            setIsEdit(false);
+            goToRoute("/add-project")
           }}
         >
-          Start a Post
+          Create a Project
         </button>
       </div>
 
@@ -86,7 +91,7 @@ export default function PostStatus({ currentUser }) {
         currentPost={currentPost}
       />
 
-      <div>
+      {/* <div>
         {allStatuses.map((posts) => {
           return (
             <div key={posts.id}>
@@ -94,7 +99,7 @@ export default function PostStatus({ currentUser }) {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }

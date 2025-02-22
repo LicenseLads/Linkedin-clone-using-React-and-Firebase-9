@@ -1,15 +1,19 @@
-import React, { useState, useMemo } from "react";
-import { getSingleStatus, getSingleUser } from "../../../api/FirestoreAPI";
+import React, { useState, useMemo, useEffect } from "react";
+import { getProjects, getSingleStatus, getSingleUser } from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
 import { HiOutlinePencil } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
 import FileUploadModal from "../FileUploadModal";
 import { uploadImage as uploadImageAPI } from "../../../api/ImageUpload";
 import "./index.scss";
+import CategorySwitch from "../CategorySwitch";
+import ProjectCardList from "../ProjectCardList";
 
 export default function ProfileCard({ onEdit, currentUser }) {
   let location = useLocation();
   const [allStatuses, setAllStatus] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
+  const [collection, setCollection] = useState("posts");
   const [currentProfile, setCurrentProfile] = useState({});
   const [currentImage, setCurrentImage] = useState({});
   const [progress, setProgress] = useState(0);
@@ -17,7 +21,6 @@ export default function ProfileCard({ onEdit, currentUser }) {
   const getImage = (event) => {
     setCurrentImage(event.target.files[0]);
   };
-  console.log(currentProfile);
   const uploadImage = () => {
     uploadImageAPI(
       currentImage,
@@ -37,6 +40,21 @@ export default function ProfileCard({ onEdit, currentUser }) {
       getSingleUser(setCurrentProfile, location?.state?.email);
     }
   }, []);
+
+  useEffect(() => {
+    if (collection === "projects") {
+      getProjects(setAllProjects, location?.state?.id);
+      setAllStatus([]);
+    }
+    else if (collection === "posts") {
+      getSingleStatus(setAllStatus, location?.state?.id)
+      setAllProjects([]);
+    }
+  }, [collection]);
+
+  useEffect(() => {
+    console.log(allProjects);
+  }, [allProjects]);
 
   return (
     <>
@@ -138,7 +156,9 @@ export default function ProfileCard({ onEdit, currentUser }) {
         )}
       </div>
 
-      <div className="post-status-main">
+      <CategorySwitch activeOption={collection} setActiveOption={setCollection} />
+
+      {collection === "posts" ? <div className="post-status-main">
         {allStatuses?.map((posts) => {
           return (
             <div key={posts.id}>
@@ -146,7 +166,13 @@ export default function ProfileCard({ onEdit, currentUser }) {
             </div>
           );
         })}
-      </div>
+      </div> : null}
+
+      {collection === "projects" ? <div className="post-status-main">
+        <ProjectCardList projects={allProjects} />
+      </div> : null}
+
+      <div style={{ height: "100px", width: "100px" }}> </div>
     </>
   );
 }
