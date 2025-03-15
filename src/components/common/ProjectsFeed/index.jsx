@@ -1,16 +1,24 @@
-import React, { useState, useMemo } from "react";
-import { postStatus, getStatus, updatePost } from "../../../api/FirestoreAPI";
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  postStatus,
+  getStatus,
+  updatePost,
+  getUserConnections,
+  getFeedProjects,
+} from "../../../api/FirestoreAPI";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import ModalComponent from "../Modal";
 import { uploadPostImage } from "../../../api/ImageUpload";
 import { getUniqueID } from "../../../helpers/getUniqueId";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
+import ProjectCard from "../ProjectCard";
 
 export default function ProjectFeed({ currentUser }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [status, setStatus] = useState("");
-  const [allStatuses, setAllStatus] = useState([]);
+  const [userConnections, setUserConnections] = useState([]);
+  const [feedProjects, setFeedProjects] = useState([]);
   const [currentPost, setCurrentPost] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [postImage, setPostImage] = useState("");
@@ -49,9 +57,16 @@ export default function ProjectFeed({ currentUser }) {
     setModalOpen(false);
   };
 
-  useMemo(() => {
-    getStatus(setAllStatus);
-  }, []);
+  useEffect(() => {
+    if (currentUser.id !== undefined) {
+      getUserConnections(setUserConnections, currentUser?.id);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (userConnections.length === 0) return;
+    getFeedProjects(setFeedProjects, userConnections);
+  }, [userConnections]);
 
   return (
     <div className="project-feed-main">
@@ -69,7 +84,7 @@ export default function ProjectFeed({ currentUser }) {
         <button
           className="open-project-modal"
           onClick={() => {
-            goToRoute("/add-project")
+            goToRoute("/add-project");
           }}
         >
           Create a Project
@@ -91,15 +106,23 @@ export default function ProjectFeed({ currentUser }) {
         currentPost={currentPost}
       />
 
-      {/* <div>
-        {allStatuses.map((posts) => {
+      <div className="projects-feed">
+        {feedProjects.map((project) => {
           return (
-            <div key={posts.id}>
-              <PostsCard posts={posts} getEditData={getEditData} />
+            <div key={project.id}>
+              <ProjectCard
+                id={project.id}
+                name={project.name}
+                description={project.description}
+                author={project.author}
+                createdAt={project.created_at}
+                updatedAt={project.updated_at}
+              />
+              <div className="projects-feed-spacer" />
             </div>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }

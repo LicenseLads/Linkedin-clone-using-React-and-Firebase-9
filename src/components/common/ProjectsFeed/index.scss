@@ -1,76 +1,89 @@
 .project-feed-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  .user-details {
+    width: 550px;
+    height: auto;
+    background-color: whitesmoke;
+    margin-top: 100px;
+    border: 1px solid #b7b7b7;
+    border-radius: 7px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    position: relative;
-    .user-details {
-      width: 550px;
-      height: auto;
-      background-color: whitesmoke;
-      margin-top: 100px;
+    align-items: center;
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: -60px;
       border: 1px solid #b7b7b7;
-      border-radius: 7px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-top: -60px;
-        border: 1px solid #b7b7b7;
-        padding: 1px;
-      }
-  
-      .name {
-        font-weight: 600;
-        font-family: system-ui;
-      }
-  
-      .headline {
-        font-family: system-ui;
-        margin-top: -15px;
-      }
+      padding: 1px;
     }
-    .project-status {
-      width: 550px;
-      height: 120px;
-      background-color: whitesmoke;
-      margin-top: 30px;
-      border: 1px solid #b7b7b7;
-      border-radius: 7px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-  
-      .project-image {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 50%;
-      }
-      .open-project-modal {
-        width: 80%;
-        height: 50px;
-        text-align: left;
-        color: rgba(84, 84, 84, 0.89);
-        background-color: whitesmoke;
-        outline: none;
-        border: 1px solid #b7b7b7;
-        border-radius: 30px;
-        margin-left: -30px;
-        cursor: pointer;
-        padding: 15px;
-        font-weight: 600;
-        font-size: 14px;
-        font-family: system-ui, sans-serif;
-      }
-  
-      .open-project-modal:hover {
-        background-color: #dcdbdb;
-      }
+
+    .name {
+      font-weight: 600;
+      font-family: system-ui;
+    }
+
+    .headline {
+      font-family: system-ui;
+      margin-top: -15px;
     }
   }
-  
+  .project-status {
+    width: 550px;
+    height: 120px;
+    background-color: whitesmoke;
+    margin-top: 30px;
+    border: 1px solid #b7b7b7;
+    border-radius: 7px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .project-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .open-project-modal {
+      width: 80%;
+      height: 50px;
+      text-align: left;
+      color: rgba(84, 84, 84, 0.89);
+      background-color: whitesmoke;
+      outline: none;
+      border: 1px solid #b7b7b7;
+      border-radius: 30px;
+      margin-left: -30px;
+      cursor: pointer;
+      padding: 15px;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .open-project-modal:hover {
+      background-color: #dcdbdb;
+    }
+  }
+}
+
+.projects-feed {
+  display: flex;
+  padding-top: 40px;
+  flex-wrap: wrap;
+  gap: 40px; // Horizontal space between project cards
+  max-width: 800px;
+  max-height: 400px; // Adjust this value as needed to be smaller than the current card height
+  margin: 0 auto; // Center the feed horizontally
+}
+
+.projects-feed-spacer {
+  height: 30px;
+}

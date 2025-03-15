@@ -31,9 +31,9 @@ export const postProject = (object, callback) => {
       callback();
     })
     .catch(() => {
-      toast.error("Error uploading the project! Please try again.")
-    })
-}
+      toast.error("Error uploading the project! Please try again.");
+    });
+};
 
 export const postStatus = (object) => {
   addDoc(postsRef, object)
@@ -56,16 +56,51 @@ export const getStatus = (setAllStatus) => {
   });
 };
 
+export const getUserConnections = (setUserConnections, userId) => {
+  const q = query(connectionRef, where("userId", "==", userId));
+  onSnapshot(q, (response) => {
+    setUserConnections(
+      response.docs.map((docs) => {
+        return { ...docs.data(), id: docs.id };
+      })
+    );
+  });
+};
+
+export const getFeedProjects = (setFeedProjects, connections) => {
+  const q = query(
+    projectsRef,
+    orderBy("updated_at"),
+    where(
+      "author",
+      "in",
+      connections.map((connection) => connection.targetId)
+    )
+  );
+  onSnapshot(q, (response) => {
+    setFeedProjects(
+      response.docs.map((docs) => {
+        return { ...docs.data(), id: docs.id };
+      })
+    );
+  });
+};
+
 export const getProjects = (setAllProjects, id) => {
-  const q = query(projectsRef, orderBy("updated_at"), where("author", "==", id), limit(5));
+  const q = query(
+    projectsRef,
+    orderBy("updated_at"),
+    where("author", "==", id),
+    limit(5)
+  );
   onSnapshot(q, (response) => {
     setAllProjects(
       response.docs.map((docs) => {
         return { ...docs.data(), id: docs.id };
       })
-    )
-  })
-}
+    );
+  });
+};
 
 export const getAllUsers = (setAllUsers) => {
   onSnapshot(userRef, (response) => {
@@ -109,13 +144,14 @@ export const postUserData = (object) => {
 
 export const getCurrentUser = (setCurrentUser) => {
   onSnapshot(userRef, (response) => {
-    const currentUserResponse = response.docs
-    .map((docs) => {
+    const currentUserResponse = response.docs.map((docs) => {
       return { ...docs.data(), id: docs.id };
-    })
+    });
 
     const localStorageEmail = localStorage.getItem("userEmail");
-    const foundUser = currentUserResponse.find((user) => user.email.toLowerCase() === localStorageEmail.toLowerCase());
+    const foundUser = currentUserResponse.find(
+      (user) => user.email.toLowerCase() === localStorageEmail.toLowerCase()
+    );
 
     setCurrentUser(foundUser);
   });
@@ -255,7 +291,7 @@ export const getProjectById = async (id) => {
   if (projectSnapshot.exists()) {
     return projectSnapshot.data();
   } else {
-    console.error('No such project!');
+    console.error("No such project!");
     return null;
   }
 };
