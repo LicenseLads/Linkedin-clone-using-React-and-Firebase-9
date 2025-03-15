@@ -40,5 +40,13 @@ export const router = createBrowserRouter([
   {
     path: "/messages",
     element: <MessagesLayout  />
+  },
+  {
+    path: "/view-project/:projectId",
+    element: <ProjectLayout />
+  },
+  {
+    path: "/edit-project/:projectId",
+    element: <ProjectLayout />
   }
 ]);

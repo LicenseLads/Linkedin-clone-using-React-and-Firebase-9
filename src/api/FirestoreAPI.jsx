@@ -12,8 +12,10 @@ import {
   orderBy,
   serverTimestamp,
   limit,
+  getDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { getAuth } from "firebase/auth";
 
 let postsRef = collection(firestore, "posts");
 let userRef = collection(firestore, "users");
@@ -244,5 +246,54 @@ export const getConnections = (userId, targetId, setIsConnected) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const getProjectById = async (id) => {
+  const projectDoc = doc(projectsRef, id);
+  const projectSnapshot = await getDoc(projectDoc);
+  if (projectSnapshot.exists()) {
+    return projectSnapshot.data();
+  } else {
+    console.error('No such project!');
+    return null;
+  }
+};
+
+export const updateProjectById = async (projectId, projectData) => {
+  const projectDoc = doc(projectsRef, projectId);
+  await updateDoc(projectDoc, projectData);
+};
+
+// Append new function without deleting any existing ones:
+
+/**
+ * Asynchronously fetches the Firestore user document for the current user
+ * from the "users" collection and returns the userId field from that document.
+ *
+ * This method does not use auth.currentUser.uid directly; instead, it fetches
+ * the full Firestore user record and retrieves the user.userId property.
+ *
+ * @returns {Promise<string | null>} The Firestore userId, or null if not found.
+ */
+export const getFirestoreUserId = async () => {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+  console.log(currentUser);
+  if (!currentUser) return null;
+
+  try {
+    // Assuming the user's Firestore document is stored in the "users" collection
+    // with the document ID equal to the Firebase Authentication uid.
+    const userDocRef = doc(firestore, "users", currentUser.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      const userData = userDocSnap.data();
+      return userData.userId ? userData.userId : null;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching Firestore user:", error);
+    return null;
   }
 };

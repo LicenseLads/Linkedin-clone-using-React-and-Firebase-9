@@ -1,0 +1,56 @@
+.project-view {
+  background-color: #f9f9f9; // light grey background color
+  padding: 20px;
+  border-radius: 10px;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pill-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .edit-button:hover {
+    background-color: #0056b3;
+  }
+
+  .info-cell {
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .status-cell {
+    background-color: #d1e7dd; // light green
+    color: #0f5132; // dark green
+  }
+
+  .label-cell {
+    background-color: #cfe2ff; // light blue
+    color: #084298; // dark blue
+  }
+
+  .github-card {
+    background-color: #f0f0f0; // light grey background color
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+}

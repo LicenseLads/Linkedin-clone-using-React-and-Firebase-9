@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "./index.scss";
 import { toast } from "react-toastify";
-import { postProject } from "../../../api/FirestoreAPI";
+import { postProject, updateProjectById, getProjectById } from "../../../api/FirestoreAPI";
 import { useNavigate } from "react-router-dom";
 
-export const ProjectForm = ({ entryId, currentUserId }) => {
-  const [projectName, setProjectName] = useState("");
-  const [projectURL, setProjectURL] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [projectType, setProjectType] = useState("");
-  const [projectLabel, setProjectLabel] = useState("");
-  const [hasGithubRepository, setHasGithubRepository] = useState(false);
+export const ProjectForm = ({ currentUserId }) => {
+  console.log(currentUserId)
 
-  const [image, setImage] = useState("");
+  const { projectId } = useParams();
+  const [projectData, setProjectData] = useState({
+    name: "",
+    url: "",
+    description: "",
+    label: "",
+    status: "",
+    has_github_repository: false,
+    image: ""
+  });
+
+  useEffect(() => {
+    if (projectId) {
+      getProjectById(projectId).then((data) => {
+        setProjectData(data);
+      }).catch((error) => {
+        console.error("Error fetching project data: ", error);
+      });
+    }
+  }, [projectId]);
+
 
   const navigate = useNavigate();
-
-  const changeProjectType = (type, checked) => {
-    if (checked) setProjectType(type);
-  };
-
-  const changeProjectLabel = (label, checked) => {
-    if (checked) setProjectLabel(label);
-  };
 
   const triggerToastValidationError = (errorMessage) => {
     toast.error(errorMessage);
@@ -30,16 +38,16 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
   };
 
   const validateForm = () => {
-    if (projectName === "")
+    if (projectData.name === "")
       return triggerToastValidationError("Project name cannot be empty.");
-    if (projectURL === "")
+    if (projectData.url === "")
       return triggerToastValidationError("Project URL cannot be empty.");
-    if (projectDescription.length < 80)
+    if (projectData.description.length < 80)
       return triggerToastValidationError(
         "Project description must have at least 80 characters."
       );
-    if (projectLabel === "") return triggerToastValidationError("Project must be assigned to a label.");
-    if (projectType === "") return triggerToastValidationError("Project must have an assigned status"); 
+    if (projectData.label === "") return triggerToastValidationError("Project must be assigned to a label.");
+    if (projectData.status === "") return triggerToastValidationError("Project must have an assigned status"); 
 
     return true;
   };
@@ -49,23 +57,34 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
 
     if (validateForm()) {
         const projectEntry = {
-            name: projectName,
-            url: projectURL,
-            label: projectLabel,
-            status: projectType,
-            description: projectDescription,
-            has_github_repository: hasGithubRepository,
-            image: image,
+            name: projectData.name,
+            url: projectData.url,
+            label: projectData.label,
+            status: projectData.status,
+            description: projectData.description,
+            has_github_repository: projectData.has_github_repository,
+            image: projectData.image,
             author: currentUserId,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
         }
-       postProject(projectEntry, () => {
-        toast.success("Project uploaded successfully!");
-        setTimeout(() => {
-            navigate("/home");
-        }, 500)
-       })
+        if (projectId) {
+          updateProjectById(projectId, projectEntry).then(() => {
+            toast.success("Project updated successfully!");
+            setTimeout(() => {
+              navigate("/home");
+            }, 500);
+          }).catch((error) => {
+            toast.error("Error updating project: " + error.message);
+          });
+        } else {
+          postProject(projectEntry, () => {
+            toast.success("Project uploaded successfully!");
+            setTimeout(() => {
+              navigate("/home");
+            }, 500);
+          });
+        }
     }
   }
 
@@ -84,8 +103,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
         <div className="form-entry-col">
           <label className="form-label"> Name </label>
           <input
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
+            value={projectData.name}
+            onChange={(e) => setProjectData({...projectData, name: e.target.value})}
             className="form-text-input"
             type="text"
           />
@@ -93,8 +112,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
         <div className="form-entry-col">
           <label className="form-label"> Project URL </label>
           <input
-            value={projectURL}
-            onChange={(e) => setProjectURL(e.target.value)}
+            value={projectData.url}
+            onChange={(e) => setProjectData({...projectData, url: e.target.value})}
             className="form-url-input"
             type="url"
           />
@@ -102,8 +121,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
         <div className="form-entry-col">
           <label className="form-label"> Description </label>
           <textarea
-            value={projectDescription}
-            onChange={(e) => setProjectDescription(e.target.value)}
+            value={projectData.description}
+            onChange={(e) => setProjectData({...projectData, description: e.target.value})}
           />
         </div>
         <div className="form-entry-col">
@@ -112,10 +131,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
             <div className="form-entry-col">
               <label className="form-label"> Web App </label>
               <input
-                checked={projectLabel === "web_app"}
-                onChange={(e) =>
-                  changeProjectLabel("web_app", e.target.checked)
-                }
+                checked={projectData.label === "web_app"}
+                onChange={(e) => setProjectData({...projectData, label: "web_app"})}
                 className="form-checkbox"
                 type="checkbox"
               />
@@ -123,10 +140,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
             <div className="form-entry-col">
               <label className="form-label"> Research Project </label>
               <input
-                checked={projectLabel === "research_project"}
-                onChange={(e) =>
-                  changeProjectLabel("research_project", e.target.checked)
-                }
+                checked={projectData.label === "research_project"}
+                onChange={(e) => setProjectData({...projectData, label: "research_project"})}
                 className="form-checkbox"
                 type="checkbox"
               />
@@ -134,10 +149,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
             <div className="form-entry-col">
               <label className="form-label"> AI Project </label>
               <input
-                checked={projectLabel === "ai_project"}
-                onChange={(e) =>
-                  changeProjectLabel("ai_project", e.target.checked)
-                }
+                checked={projectData.label === "ai_project"}
+                onChange={(e) => setProjectData({...projectData, label: "ai_project"})}
                 className="form-checkbox"
                 type="checkbox"
               />
@@ -145,8 +158,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
             <div className="form-entry-col">
               <label className="form-label"> Other </label>
               <input
-                checked={projectLabel === "other"}
-                onChange={(e) => changeProjectLabel("other", e.target.checked)}
+                checked={projectData.label === "other"}
+                onChange={(e) => setProjectData({...projectData, label: "other"})}
                 className="form-checkbox"
                 type="checkbox"
               />
@@ -156,8 +169,9 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
         <div className="form-entry-col">
           <label className="form-label"> GitHub Repository </label>
           <input
-            onChange={(event) => setHasGithubRepository(event.target.checked)}
-            disabled={projectURL.length === 0}
+            checked={projectData.has_github_repository}
+            onChange={(event) => setProjectData({...projectData, has_github_repository: event.target.checked})}
+            disabled={projectData.url.length === 0}
             className="form-checkbox"
             type="checkbox"
           />
@@ -168,8 +182,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
             <div className="form-entry-col">
               <label className="form-label"> Done </label>
               <input
-                checked={projectType === "done"}
-                onChange={(e) => changeProjectType("done", e.target.checked)}
+                checked={projectData.status === "done"}
+                onChange={(e) => setProjectData({...projectData, status: "done"})}
                 className="form-checkbox"
                 type="checkbox"
               />
@@ -177,10 +191,8 @@ export const ProjectForm = ({ entryId, currentUserId }) => {
             <div className="form-entry-col">
               <label className="form-label"> In progress </label>
               <input
-                checked={projectType === "in_progress"}
-                onChange={(e) =>
-                  changeProjectType("in_progress", e.target.checked)
-                }
+                checked={projectData.status === "in_progress"}
+                onChange={(e) => setProjectData({...projectData, status: "in_progress"})}
                 className="form-checkbox"
                 type="checkbox"
               />

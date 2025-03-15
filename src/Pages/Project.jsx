@@ -19,7 +19,7 @@ export default function Project({ currentUser }) {
       setType("edit");
       return;
     }
-    else {
+    else if (location.pathname.startsWith("/view-project")) {
       setType("view");
       return;
     }
@@ -35,7 +35,7 @@ export default function Project({ currentUser }) {
       }
     });
     loadProjectType();
-  }, []);
+  }, [location]);
 
   return loading ? <Loader /> : <ProjectComponent userId={currentUser.id} type={type} />;
 }

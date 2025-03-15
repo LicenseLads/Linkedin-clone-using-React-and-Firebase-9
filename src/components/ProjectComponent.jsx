@@ -1,5 +1,6 @@
 import "../Sass/ProjectComponent.scss";
 import { ProjectForm } from "./common/ProjectForm";
+import ProjectView from "./common/ProjectView";
 
 export default function ProjectComponent ({ type, userId }) {
     const renderProjectComponent = () => {
@@ -7,9 +8,9 @@ export default function ProjectComponent ({ type, userId }) {
             case "add":
                 return <ProjectForm currentUserId={userId} entryId={null} />
             case "edit":
-                return <ProjectForm entryId={type} />
+                return <ProjectForm currentUserId={userId} entryId={type} />
             case "view":
-                return <ProjectForm entryId={type} />
+                return <ProjectView currentUserId={userId} entryId={type} />
         }
     }
 
