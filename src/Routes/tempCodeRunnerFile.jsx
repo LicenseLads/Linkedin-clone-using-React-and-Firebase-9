@@ -6,7 +6,6 @@ import ProfileLayout from "../layouts/ProfileLayout";
 import ConnectionLayout from "../layouts/ConnectionLayout";
 import ProjectsLayout from "../layouts/ProjectsLayout";
 import ProjectLayout from "../layouts/ProjectLayout";
-import MessagesLayout from "../layouts/MessagesLayout";
 
 export const router = createBrowserRouter([
   {
@@ -36,9 +35,5 @@ export const router = createBrowserRouter([
   {
     path: "/add-project",
     element: <ProjectLayout />
-  },
-  {
-    path: "/messages",
-    element: <MessagesLayout  />
   }
 ]);

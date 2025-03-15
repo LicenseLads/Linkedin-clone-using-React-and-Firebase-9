@@ -23,13 +23,13 @@ export default function PostsCard({ posts, id, getEditData }) {
   }, []);
 
   useEffect(() => {
-    getConnections(currentUser.id, posts.userID, setIsConnected);
-  }, [currentUser.id, posts.userID]);
+    getConnections(currentUser?.id, posts.userID, setIsConnected);
+  }, [currentUser?.id, posts.userID]);
 
-  return isConnected || currentUser.id === posts.userID ? (
+  return isConnected || currentUser?.id === posts.userID ? (
     <div className="posts-card" key={id}>
       <div className="post-image-wrapper">
-        {currentUser.id === posts.userID ? (
+        {currentUser?.id === posts.userID ? (
           <div className="action-container">
             <BsPencil
               size={20}
