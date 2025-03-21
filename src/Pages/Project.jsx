@@ -37,5 +37,5 @@ export default function Project({ currentUser }) {
     loadProjectType();
   }, [location]);
 
-  return loading ? <Loader /> : <ProjectComponent userId={currentUser.id} type={type} />;
+  return loading ? <Loader /> : <ProjectComponent userName={currentUser.name} userId={currentUser.id} type={type} />;
 }

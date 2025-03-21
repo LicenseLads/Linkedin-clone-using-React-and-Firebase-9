@@ -24,7 +24,7 @@ export default function LikeButton({ userId, postId, currentUser }) {
   };
 
   const addComment = () => {
-    postComment(postId, comment, getCurrentTimeStamp("LLL"), currentUser?.name);
+    postComment({postId, comment, timeStamp: getCurrentTimeStamp("LLL"), name: currentUser?.name});
     setComment("");
   };
   useMemo(() => {

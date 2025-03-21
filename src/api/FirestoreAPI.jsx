@@ -86,6 +86,26 @@ export const getFeedProjects = (setFeedProjects, connections) => {
   });
 };
 
+export const getCommentsForProject = (setComments, projectId) => {
+  const q = query(
+    commentsRef,
+    orderBy("timeStamp"),
+    where(
+      "projectId",
+      "==",
+      projectId
+    )
+  );
+
+  onSnapshot(q, (response) => {
+    setComments(
+      response.docs.map((docs) => {
+        return { ...docs.data(), id: docs.id }
+      })
+    )
+  })
+}
+
 export const getProjects = (setAllProjects, id) => {
   const q = query(
     projectsRef,
@@ -200,14 +220,9 @@ export const getLikesByUser = (userId, postId, setLiked, setLikesCount) => {
   }
 };
 
-export const postComment = (postId, comment, timeStamp, name) => {
+export const postComment = (document) => {
   try {
-    addDoc(commentsRef, {
-      postId,
-      comment,
-      timeStamp,
-      name,
-    });
+    addDoc(commentsRef, document);
   } catch (err) {
     console.log(err);
   }
