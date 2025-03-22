@@ -58,7 +58,7 @@ export default function LikeButton({ userId, postId, currentUser }) {
             />
           }
 
-          <p className={showCommentBox ? "blue" : "black"}>Comments</p>
+          <p className={showCommentBox ? "blue" : "black"}>Recenzii</p>
         </div>
       </div>
       {showCommentBox ? (

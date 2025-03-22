@@ -49,7 +49,7 @@ const CommentsScrollSection = ({
 
   return (
     <>
-      <h3>Comments</h3>
+      <h3>Recenzii</h3>
       <div ref={scrollRef} className="comment-section">
         {comments.length === 0 ? (
           <p>No comments for this post.</p>
