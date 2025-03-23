@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@davzon/react-country-state-city": "^1.0.10",
     "antd": "^5.2.1",
+    "country-state-city": "^3.2.1",
     "firebase": "^9.17.1",
     "firebase-tools": "^11.24.0",
     "linkedin-clone": "file:",
@@ -18,11 +20,13 @@
     "moment": "^2.29.4",
     "quill-emoji": "^0.2.0",
     "react": "^18.2.0",
+    "react-country-state-city": "^1.1.12",
     "react-dom": "^18.2.0",
     "react-google-button": "^0.7.2",
     "react-icons": "^4.7.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.8.1",
+    "react-select": "^5.10.1",
     "react-toastify": "^9.1.1",
     "react-uuid": "^2.0.0",
     "sass": "^1.58.2",

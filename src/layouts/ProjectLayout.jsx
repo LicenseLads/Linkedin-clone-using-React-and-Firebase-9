@@ -10,7 +10,7 @@ export default function ProjectLayout() {
     getCurrentUser(setCurrentUser);
   }, []);
   return (
-    <div>
+    <div style={{ backgroundColor: "red" }}>
       <Topbar currentUser={currentUser} />
       <Project currentUser={currentUser} />
     </div>
