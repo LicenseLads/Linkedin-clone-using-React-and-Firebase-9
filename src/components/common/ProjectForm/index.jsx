@@ -92,7 +92,9 @@ export const ProjectForm = ({ currentUserId }) => {
     <div className="project-form-wrapper">
       <form onSubmit={submitForm} className="project-form">
         <div className="form-title">
-          <h1> Add a project to your project feed! </h1>
+        <h1 style={{ color: "#232D3F" }}>
+          Add a project to your project feed!
+        </h1>
           <p>
             Upload your project for the world to see! You can add an online
             reference to showcase your project via a GitHub link. You can also

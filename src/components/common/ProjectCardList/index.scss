@@ -1,10 +1,21 @@
-.project-card-list {
+.project-author-left {
     display: flex;
-    margin-top: 40px;
-    margin-bottom: 10px;
-    flex-direction: column;
-    width: 100%;
-    justify-content: center;
     align-items: center;
-    gap: 30px;
-}
+    gap: 10px;
+    cursor: pointer;
+  }
+  
+  .project-author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #232D3F;
+  }
+  
+  .project-author-name {
+    font-weight: 500;
+    color: #232D3F;
+    font-size: 0.95rem;
+  }
+  

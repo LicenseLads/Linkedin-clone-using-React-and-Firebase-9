@@ -13,7 +13,7 @@ export default function CategorySwitch({ activeOption, setActiveOption }) {
           className="switch-item"
           style={{
             backgroundColor:
-              activeOption === "posts" ? "#0072b1" : "transparent",
+              activeOption === "posts" ? "#232D3F" : "transparent",
             color: activeOption === "posts" ? "white" : "black"
           }}
           onClick={() => handleSwitchClick("posts")}
@@ -24,7 +24,7 @@ export default function CategorySwitch({ activeOption, setActiveOption }) {
           className="switch-item"
           style={{
             backgroundColor:
-              activeOption === "projects" ? "#0072b1" : "transparent",
+              activeOption === "projects" ? "#695242" : "transparent",
             color: activeOption === "projects" ? "white" : "black"
           }}
           onClick={() => handleSwitchClick("projects")}

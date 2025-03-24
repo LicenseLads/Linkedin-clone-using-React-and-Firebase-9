@@ -64,7 +64,7 @@
         flex-direction: column;
         p {
             font-size: 18px;
-            color: grey;
+            color: #CDC3BD;
         }
     }
 
@@ -75,18 +75,18 @@
         width: 100%;
         justify-content: flex-end;
         .form-submit-button {
-            background-color: #0072b1;
+            background-color: #695242;
             border: 2px solid transparent;
             border-radius: 12px;
             font-size: 20px;
-            color: white;
+            color: #CDC3BD;
             padding: 6px 20px 6px 20px;
             width: 120px;
             transition: cubic-bezier(0.075, 0.82, 0.165, 1);
             transition-duration: 0.3s;
         }
         .form-submit-button:hover {
-            background-color: #34a5e2;
+            background-color: #232D3F;
             cursor: pointer;
         }
     }

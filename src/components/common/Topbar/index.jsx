@@ -19,10 +19,13 @@ export default function Topbar({ currentUser }) {
   return (
     <div className="topbar-main">
       {popupVisible && (
-        <div className="popup-position">
-          <ProfilePopup />
+        <div className="popup-overlay" onClick={() => setPopupVisible(false)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <ProfilePopup />
+          </div>
         </div>
       )}
+
 
       <div className="brand-logo" onClick={() => goToRoute("/home")}>
         <span className="brand-text">Meraki</span>
@@ -34,25 +37,25 @@ export default function Topbar({ currentUser }) {
             size={28}
             className="react-icon"
             onClick={() => goToRoute("/home")}
-            title="Acasă"
+            title="Home"
           />
           <AiOutlineUserSwitch
             size={28}
             className="react-icon"
             onClick={() => goToRoute("/connections")}
-            title="Conexiuni"
+            title="Connections"
           />
           <BsBriefcase
             size={26}
             className="react-icon"
             onClick={() => goToRoute("/projects")}
-            title="Proiecte"
+            title="Projects"
           />
           <AiOutlineMessage
             size={28}
             className="react-icon"
             onClick={() => goToRoute("/messages")}
-            title="Mesaje"
+            title="Messages"
           />
         </div>
       </div>
