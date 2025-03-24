@@ -22,7 +22,9 @@ export default function LoginComponent() {
 
   return (
     <div className="login-wrapper">
-      <img src={LinkedinLogo} className="linkedinLogo" />
+      <div className="brand-logo">
+        <span className="brand-text">Meraki</span>
+      </div>
 
       <div className="login-wrapper-inner">
         <h1 className="heading">Sign in</h1>
@@ -53,7 +55,7 @@ export default function LoginComponent() {
       <hr className="hr-text" data-content="or" />
       <div className="google-btn-container">
         <p className="go-to-signup">
-          New to LinkedIn?{" "}
+          New to Meraki?{" "}
           <span className="join-now" onClick={() => navigate("/register")}>
             Join now
           </span>

@@ -23,6 +23,19 @@ $linkedinBlue3: #004c75;
   font-family: system-ui;
   font-size: 16px;
 }
+
+.common-textarea {
+  height: 120px;
+  padding: 10px;
+  background-color: white;
+  outline: none;
+  border: 1px solid #212121;
+  color: #212121;
+  border-radius: 3px;
+  font-family: system-ui;
+  font-size: 16px;
+}
+
 .common-input:focus {
   outline: 1px solid $linkedinBlue1;
 }
