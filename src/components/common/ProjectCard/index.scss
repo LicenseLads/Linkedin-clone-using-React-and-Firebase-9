@@ -4,10 +4,12 @@
     background-color: whitesmoke;
     cursor: pointer;
     border-radius: 12px;
-    height: 450px;
+    height: 400px;
     max-width: 950px;
     flex-direction: column;
-    padding: 20px;
+    border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
+    box-shadow: #9ea4ae inset;
     .project-card-top {
         display: flex;
         flex-direction: row;
@@ -41,11 +43,86 @@
         text-align: left;
         color: gray;
     }
-    .project-card-description {
+    .project-description {
         font-size: 17px;
-        padding-top: 30px;
-        height: 100px;
+        height: 125px;
+        max-width: 550px;
+        position: relative;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition: all 0.3s ease;    
+        word-break: break-word;
+        white-space: normal;
+        padding: 0px 20px;
+    }
+    
+    .project-author-info {
+        padding: 14px 20px;
+    }
+
+     .project-title {
+        padding: 0px 20px;
+        text-transform: uppercase;
+    }
+
+    .project-date {
+        padding: 20px;
+        color: rgb(151, 151, 151);
+        font-weight: lighter;
+    }
+
+    .project-card-header-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .status-label {
+            display: inline-block;
+            padding: 6px 14px;
+            border: 2px solid #B2998A;
+            border-radius: 16px; /* fully rounded */
+            font-size: 14px;
+            text-align: center;
+            color: #B2998A;
+            font-weight: 700;
+            margin-right: 16px;
+        }
+    }
+
+    .project-card-footer-row {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-end;
+        .project-card-footer-item {
+            padding: 20px;
+            .label {
+                display: inline-block;
+                padding: 4px 10px;
+                font-weight: 200;
+                text-transform: capitalize;
+                border-radius: 9999px; /* fully rounded */
+                font-size: 14px;
+                text-align: center;
+                color: white;
+            }
+            .footer-displays-row {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                margin: 0 auto;
+                .action-icon {
+                    color: #B2998A;
+                    transition: all .1s ease-in-out;
+                }
+                .action-icon:hover {
+                    scale: 120%;
+                    transform: scale(1.1);
+                }
+            }
+        }
     }
 }

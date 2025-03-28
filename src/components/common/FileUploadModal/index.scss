@@ -5,7 +5,8 @@
   height: auto;
   flex-direction: column;
   label {
-    border: 1px solid #232D3f;
+        border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
     padding: 10px;
     cursor: pointer;
     font-family: system-ui;

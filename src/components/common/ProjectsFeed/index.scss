@@ -9,7 +9,8 @@
     height: auto;
     background-color: whitesmoke;
     margin-top: 100px;
-    border: 1px solid #232D3f;
+        border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
     border-radius: 7px;
     display: flex;
     flex-direction: column;
@@ -20,7 +21,8 @@
       object-fit: cover;
       border-radius: 50%;
       margin-top: -60px;
-      border: 1px solid #232D3f;
+          border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
       padding: 1px;
     }
 
@@ -39,7 +41,8 @@
     height: 120px;
     background-color: whitesmoke;
     margin-top: 30px;
-    border: 1px solid #232D3f;
+        border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
     border-radius: 7px;
     display: flex;
     justify-content: space-around;
@@ -58,7 +61,8 @@
       color: rgba(84, 84, 84, 0.89);
       background-color: whitesmoke;
       outline: none;
-      border: 1px solid #232D3f;
+          border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
       border-radius: 30px;
       margin-left: -30px;
       cursor: pointer;
@@ -79,7 +83,7 @@
   padding-top: 40px;
   flex-wrap: wrap;
   gap: 40px; // Horizontal space between project cards
-  max-width: 950px;
+  max-width: 550px;
   margin: 0 auto; // Center the feed horizontally
 }
 

@@ -47,7 +47,9 @@ export default function ProjectCardList({ projects }) {
             key={project.id}
             id={project.id}
             name={project.name}
-            authorData={authorData}   // trimitem tot obiectul
+            authorData={authorData}
+            status={project.status}
+            label={project.label}  
             createdAt={project.created_at}
             updatedAt={project.updated_at}
             description={project.description}

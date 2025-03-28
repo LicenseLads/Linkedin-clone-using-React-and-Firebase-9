@@ -142,7 +142,8 @@
       input {
         flex: 1;
         padding: 0.6rem;
-        border: 1px solid #232D3F;
+            border: 1.3px solid #b2bccb;
+    filter: drop-shadow(0 0 0.55rem rgb(130, 125, 126));
         border-radius: 4px;
         font-size: 0.9rem;
         outline: none;

@@ -115,6 +115,8 @@ export default function ProjectFeed({ currentUser }) {
                 name={project.name}
                 description={project.description}
                 author={project.author}
+                status={project.status}
+                label={project.label}
                 createdAt={project.created_at}
                 updatedAt={project.updated_at}
               />
