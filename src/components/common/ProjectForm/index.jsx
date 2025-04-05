@@ -70,7 +70,6 @@ export const ProjectForm = ({ currentUserId }) => {
         }
         if (projectId) {
           updateProjectById(projectId, projectEntry).then(() => {
-            toast.success("Project updated successfully!");
             setTimeout(() => {
               navigate("/home");
             }, 500);
@@ -79,7 +78,6 @@ export const ProjectForm = ({ currentUserId }) => {
           });
         } else {
           postProject(projectEntry, () => {
-            toast.success("Project uploaded successfully!");
             setTimeout(() => {
               navigate("/home");
             }, 500);
