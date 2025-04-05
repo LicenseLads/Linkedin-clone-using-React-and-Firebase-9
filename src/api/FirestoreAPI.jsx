@@ -90,21 +90,17 @@ export const getCommentsForProject = (setComments, projectId) => {
   const q = query(
     commentsRef,
     orderBy("timeStamp"),
-    where(
-      "projectId",
-      "==",
-      projectId
-    )
+    where("projectId", "==", projectId)
   );
 
   onSnapshot(q, (response) => {
     setComments(
       response.docs.map((docs) => {
-        return { ...docs.data(), id: docs.id }
+        return { ...docs.data(), id: docs.id };
       })
-    )
-  })
-}
+    );
+  });
+};
 
 export const getProjects = (setAllProjects, id) => {
   const q = query(
@@ -159,21 +155,21 @@ export const getConnectionCountPerUser = (setUserConnectionCount, userId) => {
   onSnapshot(q, (response) => {
     setUserConnectionCount(response.docs.length);
   });
-}
+};
 
 export const getPostsCountPerUser = (setUserPostsCount, userId) => {
   const q = query(postsRef, where("userID", "==", userId));
   onSnapshot(q, (response) => {
     setUserPostsCount(response.docs.length);
   });
-}
+};
 
 export const getProjectsCountPerUser = (setUserProjectsCount, userId) => {
   const q = query(projectsRef, where("author", "==", userId));
   onSnapshot(q, (response) => {
     setUserProjectsCount(response.docs.length);
   });
-}
+};
 
 export const postUserData = (object) => {
   addDoc(userRef, object)
@@ -198,12 +194,21 @@ export const getCurrentUser = (setCurrentUser) => {
   });
 };
 
+export const getUserById = (userId, setUser) => {
+  onSnapshot(doc(userRef, userId), (response) => {
+    console.log(response.data());
+    setUser(
+      { ...response.data(), id: userId }
+    );
+  });
+};
+
 export const editProfile = (userID, payload) => {
   let userToEdit = doc(userRef, userID);
 
   updateDoc(userToEdit, payload)
     .then(() => {
-      toast.success("Profile has been updated successfully");
+      toast.success("Profile has been updated successfully!");
     })
     .catch((err) => {
       console.log(err);

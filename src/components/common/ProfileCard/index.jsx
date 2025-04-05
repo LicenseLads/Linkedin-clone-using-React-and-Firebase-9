@@ -42,27 +42,32 @@ export default function ProfileCard({ onEdit, currentUser }) {
     );
   };
 
-  useMemo(() => {
-    if (location?.state?.id) {
-      getSingleStatus(setAllStatus, location?.state?.id);
-    }
+  useEffect(() => { 
+    if (currentUser?.id === undefined) return;
 
-    if (location?.state?.email) {
-      getSingleUser(setCurrentProfile, location?.state?.email);
+    getSingleStatus(setAllStatus, currentUser?.id);
+
+    if (currentUser?.email === undefined) return;
+
+    if (currentUser?.email) {
+      getSingleUser(setCurrentProfile, currentUser?.email);
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
+    if (currentUser?.id === undefined) return;
+
     if (collection === "projects") {
-      getProjects(setAllProjects, location?.state?.id);
+      getProjects(setAllProjects, currentUser?.id);
       setAllStatus([]);
     } else if (collection === "posts") {
-      getSingleStatus(setAllStatus, location?.state?.id);
+      getSingleStatus(setAllStatus, currentUser?.id);
       setAllProjects([]);
     }
-  }, [collection]);
+  }, [collection, currentUser?.id]);
 
   useEffect(() => {
+    console.log("call");
     if (currentUser.id === undefined) return;
     getConnectionCountPerUser(setConnectionsCount, currentUser?.id);
     getPostsCountPerUser(setUserPostsCount, currentUser?.id);
