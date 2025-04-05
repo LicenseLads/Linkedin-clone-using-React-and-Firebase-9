@@ -154,6 +154,27 @@ export const getSingleUser = (setCurrentUser, email) => {
   });
 };
 
+export const getConnectionCountPerUser = (setUserConnectionCount, userId) => {
+  const q = query(connectionRef, where("userId", "==", userId));
+  onSnapshot(q, (response) => {
+    setUserConnectionCount(response.docs.length);
+  });
+}
+
+export const getPostsCountPerUser = (setUserPostsCount, userId) => {
+  const q = query(postsRef, where("userID", "==", userId));
+  onSnapshot(q, (response) => {
+    setUserPostsCount(response.docs.length);
+  });
+}
+
+export const getProjectsCountPerUser = (setUserProjectsCount, userId) => {
+  const q = query(projectsRef, where("author", "==", userId));
+  onSnapshot(q, (response) => {
+    setUserProjectsCount(response.docs.length);
+  });
+}
+
 export const postUserData = (object) => {
   addDoc(userRef, object)
     .then(() => {})

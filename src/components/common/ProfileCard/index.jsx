@@ -1,5 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { getProjects, getSingleStatus, getSingleUser } from "../../../api/FirestoreAPI";
+import {
+  getConnectionCountPerUser,
+  getPostsCountPerUser,
+  getProjects,
+  getProjectsCountPerUser,
+  getSingleStatus,
+  getSingleUser,
+} from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
 import { HiOutlinePencil } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
@@ -14,6 +21,10 @@ export default function ProfileCard({ onEdit, currentUser }) {
   const [allStatuses, setAllStatus] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
   const [collection, setCollection] = useState("posts");
+  const [userConnectionsCount, setConnectionsCount] = useState("N/A");
+  const [userPostsCount, setUserPostsCount] = useState("N/A");
+  const [userProjectsCount, setUserProjectsCount] = useState("N/A");
+  const [userProfileAverage, setUserProfileAverage] = useState("N/A");
   const [currentProfile, setCurrentProfile] = useState({});
   const [currentImage, setCurrentImage] = useState({});
   const [progress, setProgress] = useState(0);
@@ -45,19 +56,26 @@ export default function ProfileCard({ onEdit, currentUser }) {
     if (collection === "projects") {
       getProjects(setAllProjects, location?.state?.id);
       setAllStatus([]);
-    }
-    else if (collection === "posts") {
-      getSingleStatus(setAllStatus, location?.state?.id)
+    } else if (collection === "posts") {
+      getSingleStatus(setAllStatus, location?.state?.id);
       setAllProjects([]);
     }
   }, [collection]);
 
   useEffect(() => {
-    console.log(allProjects);
-  }, [allProjects]);
+    if (currentUser.id === undefined) return;
+    getConnectionCountPerUser(setConnectionsCount, currentUser?.id);
+    getPostsCountPerUser(setUserPostsCount, currentUser?.id);
+
+    if (currentUser.accountType === "student") {
+      getProjectsCountPerUser(setUserProjectsCount, currentUser?.id);
+      // setUserProfileAverage(currentUser?.profileAverage);
+    }
+
+  }, [currentUser]);
 
   return (
-    <>
+    <div className="profile-card-wrapper">
       <FileUploadModal
         getImage={getImage}
         uploadImage={uploadImage}
@@ -75,37 +93,57 @@ export default function ProfileCard({ onEdit, currentUser }) {
           <></>
         )}
         <div className="profile-info">
-          <div>
-            <img
-              className="profile-image"
-              onClick={() => setModalOpen(true)}
-              src={
-                Object.values(currentProfile).length === 0
-                  ? currentUser.imageLink
-                  : currentProfile?.imageLink
-              }
-              alt="profile-image"
-            />
-            <h3 className="userName">
-              {Object.values(currentProfile).length === 0
-                ? currentUser.name
-                : currentProfile?.name}
-            </h3>
+          <div className="left-info">
+            <div className="profile-avatar-section">
+              <img
+                className="profile-image"
+                onClick={() => setModalOpen(true)}
+                src={
+                  Object.values(currentProfile).length === 0
+                    ? currentUser.imageLink
+                    : currentProfile?.imageLink
+                }
+                alt="profile-image"
+              />
+              <h3 className="userName">
+                {Object.values(currentProfile).length === 0
+                  ? currentUser.name
+                  : currentProfile?.name}
+              </h3>
+            </div>
+            <div class="middle-section">
+              <div class="stat">
+                <div class="stat-number">{userConnectionsCount}</div>
+                <div class="stat-label">Connections</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">{userPostsCount}</div>
+                <div class="stat-label">Posts</div>
+              </div>
+              <></>
+              {currentUser.accountType === "student" ? (
+                <>
+                  <div class="stat">
+                    <div class="stat-number">{userProjectsCount}</div>
+                    <div class="stat-label">Projects</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-number">{userProfileAverage}</div>
+                    <div class="stat-label">Profile Average</div>
+                  </div>
+                </>
+              ) : null}
+            </div>
             <p className="heading">
               {Object.values(currentProfile).length === 0
-                ? currentUser.headline
-                : currentProfile?.headline}
+                ? currentUser.accountType
+                : currentProfile?.accountType}
             </p>
-            {(currentUser.city || currentUser.country) &&
-            (currentProfile?.city || currentProfile?.country) ? (
-              <p className="location">
-                {Object.values(currentProfile).length === 0
-                  ? `${currentUser.city}, ${currentUser.country} `
-                  : `${currentProfile?.city}, ${currentUser.country}`}
-              </p>
-            ) : (
-              <></>
-            )}
+            <p className="location">
+              {Object.values(currentProfile).length === 0
+                ? `${currentUser.city}, ${currentUser.country} `
+                : `${currentProfile?.city}, ${currentProfile.country}`}
+            </p>
             {currentUser.website || currentProfile?.website ? (
               <a
                 className="website"
@@ -140,8 +178,8 @@ export default function ProfileCard({ onEdit, currentUser }) {
         </div>
         <p className="about-me">
           {Object.values(currentProfile).length === 0
-            ? currentUser.aboutMe
-            : currentProfile?.aboutMe}
+            ? currentUser.about
+            : currentProfile?.about}
         </p>
 
         {currentUser.skills || currentProfile?.skills ? (
@@ -156,23 +194,32 @@ export default function ProfileCard({ onEdit, currentUser }) {
         )}
       </div>
 
-      <CategorySwitch activeOption={collection} setActiveOption={setCollection} />
+      {currentUser?.accountType === "student" ? (
+        <CategorySwitch
+          activeOption={collection}
+          setActiveOption={setCollection}
+        />
+      ) : null}
 
-      {collection === "posts" ? <div className="post-status-main">
-        {allStatuses?.map((posts) => {
-          return (
-            <div key={posts.id}>
-              <PostsCard posts={posts} />
-            </div>
-          );
-        })}
-      </div> : null}
+      {collection === "posts" ? (
+        <div className="post-status-main">
+          {allStatuses?.map((posts) => {
+            return (
+              <div key={posts.id}>
+                <PostsCard posts={posts} />
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
 
-      {collection === "projects" ? <div className="post-status-main">
-        <ProjectCardList projects={allProjects} />
-      </div> : null}
+      {collection === "projects" ? (
+        <div className="post-status-main">
+          <ProjectCardList projects={allProjects} />
+        </div>
+      ) : null}
 
       <div style={{ height: "100px", width: "100px" }}> </div>
-    </>
+    </div>
   );
 }

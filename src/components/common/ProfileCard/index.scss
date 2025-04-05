@@ -1,6 +1,16 @@
+.profile-card-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+}
+
 .profile-card {
   width: auto;
   height: auto;
+  position: relative;
+  max-width: 750px;
+  width: 100%;
   background-color: whitesmoke;
   margin: 30px;
   border-radius: 5px;
@@ -10,15 +20,23 @@
     display: flex;
     justify-content: space-between;
     .profile-image {
-      width: 200px;
-      height: 200px;
+      width: 120px;
+      height: 120px;
       object-fit: contain;
       border-radius: 50%;
       border: 2px solid #cacaca;
       padding: 5px;
       cursor: pointer;
     }
+    .left-info {
+      width: 100%;
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+    }
     .right-info {
+      position: absolute;
+      right: 0px;
       margin-top: 25px;
       margin-right: 20px;
       .college,
@@ -67,12 +85,67 @@
   }
 
   .heading {
-    margin-top: -25px;
+    padding: 8px 12px;
+    background-color: #695242;
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    box-shadow: 0 2px 4px #B2998A;
+  }
+
+  .location {
     font-family: system-ui;
-    font-size: 16px;
-    font-weight: 400;
     color: rgba(0, 0, 0, 0.9);
-    width: 320px;
-    line-height: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+
+  .website {
+    font-family: system-ui;
+    color: rgba(159, 124, 124, 0.9);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 30px;
+    text-decoration: none;
+  }
+
+  .middle-section {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+  .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+  }
+  .stat-label {
+      font-size: 14px;
+      color: #666;
+  }
+
+  .profile-avatar-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px
   }
 }
