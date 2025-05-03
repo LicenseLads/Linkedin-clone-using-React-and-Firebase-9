@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AnimateTransition ({ condition, firstComponent, secondComponent }) {
     return <AnimatePresence mode="wait">
