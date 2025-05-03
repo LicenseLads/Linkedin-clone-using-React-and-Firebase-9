@@ -87,7 +87,7 @@ export default function ProjectFeed({ currentUser }) {
             goToRoute("/add-project");
           }}
         >
-          Create a Project
+          Crează un proiect
         </button>
       </div>
 

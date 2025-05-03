@@ -91,7 +91,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
             name="industry"
             value={editInputs.industry}
           />
-          <label>College</label>
+          <label>Colegiu</label>
           <input
             onChange={getInput}
             className="common-input"

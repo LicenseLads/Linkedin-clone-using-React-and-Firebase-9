@@ -219,7 +219,9 @@ export const getCurrentUser = (setCurrentUser) => {
 export const getUserById = (userId, setUser) => {
   onSnapshot(doc(userRef, userId), (response) => {
     console.log(response.data());
-    setUser({ ...response.data(), id: userId });
+    setUser(
+      { ...response.data(), id: userId }
+    );
   });
 };
 
@@ -235,9 +237,8 @@ export const editProfile = (userID, payload) => {
     });
 };
 
-export const likePost = async (postId, liked) => {
-  const userId = await getFirestoreUserId();
-  try {
++ export const likePost = async (postId, liked) => {
+  +   const userId = await getFirestoreUserId(); try {
     let docToLike = doc(likeRef, `${userId}_${postId}`);
     if (liked) {
       deleteDoc(docToLike);

@@ -203,7 +203,7 @@ export default function MessagesComponent({ currentUser }) {
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message ..."
+                placeholder="Scrie un mesaj ..."
                 onKeyDown={handleKeyPress}
               />
               <button onClick={handleSend} disabled={!newMessage.trim()}>

@@ -20,7 +20,7 @@ export default function LikeButton({ userId, postId, currentUser }) {
   const navigate = useNavigate();
 
   const handleLike = () => {
-    likePost(postId, liked);
+    likePost(userId, postId, liked);
   };
   const getComment = (event) => {
     setComment(event.target.value);

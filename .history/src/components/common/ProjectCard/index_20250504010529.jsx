@@ -119,12 +119,12 @@ export default function ProjectCard({
         </div>
         <div className="project-card-footer-item">
           <div className="footer-displays-row">
-            {/* <span className="action-icon">
+            <span className="action-icon">
               <FaRegCopy height={10} width={10} />
             </span>
             <span className="action-icon">
               <FaMarker height={10} width={10} />
-            </span> */}
+            </span>
           </div>
         </div>
       </div>

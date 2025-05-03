@@ -124,8 +124,8 @@ export default function ProjectCard({
             </span>
             <span className="action-icon">
               <FaMarker height={10} width={10} />
-            </span> */}
-          </div>
+            </span>
+          </div> */}
         </div>
       </div>
     </div>

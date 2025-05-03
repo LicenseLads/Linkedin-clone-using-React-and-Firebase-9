@@ -11,6 +11,7 @@ import { AiOutlineHeart, AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import { BsFillHandThumbsUpFill, BsHandThumbsUp } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+
 export default function LikeButton({ userId, postId, currentUser }) {
   const [likesCount, setLikesCount] = useState(0);
   const [showCommentBox, setShowCommentBox] = useState(false);
@@ -20,7 +21,7 @@ export default function LikeButton({ userId, postId, currentUser }) {
   const navigate = useNavigate();
 
   const handleLike = () => {
-    likePost(postId, liked);
+    likePost(userId, postId, liked);
   };
   const getComment = (event) => {
     setComment(event.target.value);
@@ -87,12 +88,12 @@ export default function LikeButton({ userId, postId, currentUser }) {
             comments.map((comment) => {
               return (
                 <div className="all-comments">
-                  <p
-                    className="name cursor-pointer hover:underline"
-                    onClick={() => navigate(`/profile?id=${comment.authorId}`)}
-                  >
-                    {comment.name}
-                  </p>
+                <p
+                  className="name cursor-pointer hover:underline"
+                  onClick={() => navigate(`/profile?id=${comment.authorId}`)}
+                >
+                  {comment.name}
+                </p>
 
                   <p className="comment">{comment.comment}</p>
 

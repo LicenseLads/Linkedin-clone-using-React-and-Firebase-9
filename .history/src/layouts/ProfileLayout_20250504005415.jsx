@@ -4,7 +4,6 @@ import Topbar from "../components/common/Topbar";
 import Profile from "../Pages/Profile";
 import { useSearchParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
 export default function ProfileLayout() {
   const [currentUser, setCurrentUser] = useState({});
   const [searchParams] = useSearchParams();
@@ -12,17 +11,13 @@ export default function ProfileLayout() {
 
   const location = useLocation();
   const stateId = location.state?.id;
-
-  useEffect(() => {
+  
+  useMemo(() => {
     if (stateId) {
-      getUserById(stateId, setCurrentUser);
-    } else if (id) {
-      getUserById(id, setCurrentUser);
-    } else {
-      getCurrentUser(setCurrentUser);
+      return getUserById(stateId, setCurrentUser);
     }
-  }, [stateId, id]);
-
+    return getCurrentUser(setCurrentUser);
+  }, [stateId]);
   return (
     <div>
       <Topbar currentUser={currentUser} />

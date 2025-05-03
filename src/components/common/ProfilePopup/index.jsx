@@ -15,7 +15,7 @@ export default function ProfilePopup() {
     <div className="popup-card">
       <p className="name">{currentUser?.name}</p>
       <Button
-        title="View Profile"
+        title="Profilul meu"
         onClick={() => {
           navigate("/profile", {
             state: {
@@ -25,7 +25,7 @@ export default function ProfilePopup() {
           window.location.reload();
         }}
       />
-      <Button title="Log out" onClick={onLogout} />
+      <Button title="Deconectare" onClick={onLogout} />
     </div>
   );
 }

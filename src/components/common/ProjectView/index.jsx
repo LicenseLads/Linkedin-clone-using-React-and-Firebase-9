@@ -39,7 +39,7 @@ const getRepoSlug = (url) => {
   }
 };
 
-const ProjectView = ({ currentUserId, currentUserName }) => {
+const ProjectView = ({ currentUserId, currentUserName, currentUserRole }) => {
   const [visibleComments, setVisibleComments] = useState(10);
   const [comments, setComments] = useState([]);
 
@@ -202,7 +202,7 @@ const ProjectView = ({ currentUserId, currentUserName }) => {
                   </>
                 ) : (
                   <p>
-                    Project URL:{" "}
+                    URL-ul Proiectului:{" "}
                     <a
                       href={project.url}
                       target="_blank"
@@ -233,6 +233,7 @@ const ProjectView = ({ currentUserId, currentUserName }) => {
         entryId={projectId}
         currentUserId={currentUserId}
         currentUserName={currentUserName}
+        currentUserRole={currentUserRole}
         comments={comments}
         visibleComments={visibleComments}
         showMoreComments={showMoreComments}

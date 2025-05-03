@@ -12,6 +12,13 @@ $merakiDarkBlue: #232D3F;
   font-weight: 400;
   color: #212121;
   background-color: #B2998A;
+  --primary-color: #232D3F;     // Hover & accente
+  --background-color: #B2998A;  // Fundal principal
+  --text-color: #232D3F;        // Text standard
+  --secondary-text: #695242;   // Nuanță maro pentru titluri
+  --border-color: #CDC3BD;     // Bej deschis pentru delimitări
+  --surface-color: #E5E0D6;    // Gri deschis pentru carduri/secțiuni
+  --shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .common-input {
