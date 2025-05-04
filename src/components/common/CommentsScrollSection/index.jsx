@@ -79,7 +79,7 @@ const CommentsScrollSection = ({
       if (currentUserRole === "teacher") {
         const existing = await getCommentsByProjectAndUser(
           entryId,
-          currentUserName
+          currentUserId
         );
         if (existing.length > 0) {
           setExistingReview(existing[0]);
@@ -209,14 +209,18 @@ const CommentsScrollSection = ({
           comments.slice(0, visibleComments).map((comment, index) => (
             <div key={index} className="comment">
               <div className="flex flex-col w-full">
-                <div className="flex items-center justify-between mb-1">
-                <img
-                  src={comment.photoURL || "../../../assets/default-user.png"} // fallback dacă nu există imagine
-                  alt={comment.name}
-                  onClick={() => navigate(`/profile?id=${comment.name}`)}
-                                
-                  className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
-                />
+              <div
+                  className="project-author-info"
+                  onClick={() => navigate(`/profile?id=${comment.authorId}`)}
+                >
+                  <img
+                    src={photoURLs[comment.authorId] || defaultUserImage}
+                    alt={comment.name}
+                    className="project-author-avatar"
+                  />
+                  <span className="project-author-name">
+                    {comment.name || "Autor necunoscut"}
+                  </span>
                   
                   <div className="flex gap-1">
                     {Array.from({ length: 10 }).map((_, i) => (
