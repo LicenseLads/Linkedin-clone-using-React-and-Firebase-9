@@ -2,14 +2,29 @@ import React, { useEffect, useState, useRef } from "react";
 import { getAllUsers } from "../api/FirestoreAPI";
 import { getMessages, sendMessage } from "../api/MessagesAPI";
 import "../Sass/MessagesComponent.scss";
+import { useSearchParams } from "react-router-dom";
 
 export default function MessagesComponent({ currentUser }) {
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+
   const [connections, setConnections] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
   const unsubscribeRef = useRef(null);
+
+  useEffect(() => {
+    if (id) {
+      getAllUsers((users) => {
+        const found = users.find((u) => u.id === id);
+        if (found) {
+          setSelectedUser(found);
+        }
+      });
+    }
+  }, [id])
 
   useEffect(() => {
     getAllUsers((users) => {

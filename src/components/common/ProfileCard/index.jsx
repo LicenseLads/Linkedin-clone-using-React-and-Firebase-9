@@ -8,8 +8,8 @@ import {
   getSingleUser,
 } from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
-import { HiOutlinePencil } from "react-icons/hi";
-import { useLocation } from "react-router-dom";
+import { HiOutlineMail, HiOutlinePencil } from "react-icons/hi";
+import { useLocation, useSearchParams } from "react-router-dom";
 import FileUploadModal from "../FileUploadModal";
 import { uploadImage as uploadImageAPI } from "../../../api/ImageUpload";
 import "./index.scss";
@@ -17,9 +17,18 @@ import CategorySwitch from "../CategorySwitch";
 import ProjectCardList from "../ProjectCardList";
 import { getConnections, addConnection } from "../../../api/FirestoreAPI";
 import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../../firebaseConfig";
 
 export default function ProfileCard({ onEdit, currentUser }) {
-  let location = useLocation();
+  const [canEdit, setCanEdit] = useState(false);
+
+  onAuthStateChanged(auth, (res) => {
+    if (res.email === currentUser.email) {
+      setCanEdit(true);
+    }
+  });
+
   const [allStatuses, setAllStatus] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
   const [collection, setCollection] = useState("posts");
@@ -101,11 +110,17 @@ export default function ProfileCard({ onEdit, currentUser }) {
         progress={progress}
       />
       <div className="profile-card">
-        {currentUser.id === location?.state?.id && (
+        <div>
           <div className="edit-btn">
-            <HiOutlinePencil className="edit-icon" onClick={onEdit} />
+            {canEdit && (
+              <HiOutlinePencil className="edit-icon" onClick={onEdit} />
+            )}
+            {!canEdit && <HiOutlineMail
+              className="edit-icon"
+              onClick={() => navigate(`/messages?id=${currentUser.id}`)}
+            />}
           </div>
-        )}
+        </div>
         <div className="profile-info">
           <div className="left-info">
             <div className="profile-avatar-section">
