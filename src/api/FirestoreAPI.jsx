@@ -113,11 +113,11 @@ export const deleteComment = async (commentId) => {
   await deleteDoc(commentDoc);
 };
 
-export const getCommentsByProjectAndUser = async (projectId, userName) => {
+export const getCommentsByProjectAndUser = async (projectId, authorId) => {
   const q = query(
     commentsRef,
     where("projectId", "==", projectId),
-    where("name", "==", userName)
+    where("authorId", "==", authorId)
   );
 
   const snapshot = await getDocs(q);
