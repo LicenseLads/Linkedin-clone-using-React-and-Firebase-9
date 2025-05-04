@@ -15,6 +15,8 @@ import { uploadImage as uploadImageAPI } from "../../../api/ImageUpload";
 import "./index.scss";
 import CategorySwitch from "../CategorySwitch";
 import ProjectCardList from "../ProjectCardList";
+import { getConnections, addConnection } from "../../../api/FirestoreAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileCard({ onEdit, currentUser }) {
   let location = useLocation();
@@ -29,6 +31,10 @@ export default function ProfileCard({ onEdit, currentUser }) {
   const [currentImage, setCurrentImage] = useState({});
   const [progress, setProgress] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const navigate = useNavigate();
+  const profileId = location?.state?.id ?? currentUser.id;
+
   const getImage = (event) => {
     setCurrentImage(event.target.files[0]);
   };
@@ -42,7 +48,7 @@ export default function ProfileCard({ onEdit, currentUser }) {
     );
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     if (currentUser?.id === undefined) return;
 
     getSingleStatus(setAllStatus, currentUser?.id);
@@ -53,6 +59,12 @@ export default function ProfileCard({ onEdit, currentUser }) {
       getSingleUser(setCurrentProfile, currentUser?.email);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser?.id && profileId) {
+      getConnections(currentUser.id, profileId, setIsConnected);
+    }
+  }, [currentUser?.id, profileId]);
 
   useEffect(() => {
     if (currentUser?.id === undefined) return;
@@ -76,7 +88,6 @@ export default function ProfileCard({ onEdit, currentUser }) {
       getProjectsCountPerUser(setUserProjectsCount, currentUser?.id);
       // setUserProfileAverage(currentUser?.profileAverage);
     }
-
   }, [currentUser]);
 
   return (
@@ -90,12 +101,10 @@ export default function ProfileCard({ onEdit, currentUser }) {
         progress={progress}
       />
       <div className="profile-card">
-        {currentUser.id === location?.state?.id ? (
+        {currentUser.id === location?.state?.id && (
           <div className="edit-btn">
             <HiOutlinePencil className="edit-icon" onClick={onEdit} />
           </div>
-        ) : (
-          <></>
         )}
         <div className="profile-info">
           <div className="left-info">
@@ -108,7 +117,7 @@ export default function ProfileCard({ onEdit, currentUser }) {
                     ? currentUser.imageLink
                     : currentProfile?.imageLink
                 }
-                alt="profile-image"
+                alt="Imagine profil"
               />
               <h3 className="userName">
                 {Object.values(currentProfile).length === 0
@@ -116,87 +125,129 @@ export default function ProfileCard({ onEdit, currentUser }) {
                   : currentProfile?.name}
               </h3>
             </div>
-            <div class="middle-section">
-              <div class="stat">
-                <div class="stat-number">{userConnectionsCount}</div>
-                <div class="stat-label">Connections</div>
+
+            <div className="middle-section">
+              <div className="stat">
+                <div className="stat-number">{userConnectionsCount}</div>
+                <div className="stat-label">Conexiuni</div>
               </div>
-              <div class="stat">
-                <div class="stat-number">{userPostsCount}</div>
-                <div class="stat-label">Posts</div>
+              <div className="stat">
+                <div className="stat-number">{userPostsCount}</div>
+                <div className="stat-label">Postări</div>
               </div>
-              <></>
-              {currentUser.accountType === "student" ? (
+              {currentUser.accountType === "student" && (
                 <>
-                  <div class="stat">
-                    <div class="stat-number">{userProjectsCount}</div>
-                    <div class="stat-label">Projects</div>
+                  <div className="stat">
+                    <div className="stat-number">{userProjectsCount}</div>
+                    <div className="stat-label">Proiecte</div>
                   </div>
-                  <div class="stat">
-                    <div class="stat-number">{userProfileAverage}</div>
-                    <div class="stat-label">Profile Average</div>
+                  <div className="stat">
+                    <div className="stat-number">{userProfileAverage}</div>
+                    <div className="stat-label">Medie profil</div>
                   </div>
                 </>
-              ) : null}
+              )}
             </div>
+
             <p className="heading">
               {Object.values(currentProfile).length === 0
                 ? currentUser.accountType
                 : currentProfile?.accountType}
             </p>
+
             <p className="location">
               {Object.values(currentProfile).length === 0
-                ? `${currentUser.city}, ${currentUser.country} `
-                : `${currentProfile?.city}, ${currentProfile.country}`}
+                ? `${currentUser.city}, ${currentUser.country}`
+                : `${currentProfile?.city}, ${currentProfile?.country}`}
             </p>
+
             {currentUser.website || currentProfile?.website ? (
               <a
                 className="website"
                 target="_blank"
                 href={
                   Object.values(currentProfile).length === 0
-                    ? `${currentUser.website}`
+                    ? currentUser.website
                     : currentProfile?.website
                 }
               >
                 {Object.values(currentProfile).length === 0
-                  ? `${currentUser.website}`
+                  ? currentUser.website
                   : currentProfile?.website}
               </a>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
 
           <div className="right-info">
             <p className="college">
+              <strong>Facultate:</strong>{" "}
               {Object.values(currentProfile).length === 0
                 ? currentUser.college
                 : currentProfile?.college}
             </p>
             <p className="company">
+              <strong>Companie:</strong>{" "}
               {Object.values(currentProfile).length === 0
                 ? currentUser.company
                 : currentProfile?.company}
             </p>
+            {/* <p className="field">
+              <strong>Câmp:</strong>{" "}
+              {Object.values(currentProfile).length === 0
+                ? currentUser.field
+                : currentProfile?.field}
+            </p> */}
           </div>
         </div>
-        <p className="about-me">
-          {Object.values(currentProfile).length === 0
-            ? currentUser.about
-            : currentProfile?.about}
-        </p>
+
+        {currentUser.id !== profileId && (
+          <div
+            style={{
+              marginTop: "16px",
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+            }}
+          >
+            {!isConnected ? (
+              <button
+                className="connect-button"
+                onClick={() => addConnection(currentUser.id, profileId)}
+              >
+                Adaugă conexiune
+              </button>
+            ) : (
+              <button
+                className="chat-button"
+                onClick={() =>
+                  navigate("/messages", {
+                    state: { selectedUserId: profileId },
+                  })
+                }
+              >
+                Trimite mesaj
+              </button>
+            )}
+          </div>
+        )}
+
+        {currentUser.about || currentProfile?.about ? (
+          <p className="about-me">
+            <strong>Despre mine:</strong> &nbsp;
+            {Object.values(currentProfile).length === 0
+              ? currentUser.about
+              : currentProfile?.about}
+          </p>
+        ) : null}
 
         {currentUser.skills || currentProfile?.skills ? (
           <p className="skills">
-            <span className="skill-label">Skills</span>:&nbsp;
+            <span className="skill-label">Abilitati:</span> &nbsp;
             {Object.values(currentProfile).length === 0
               ? currentUser.skills
               : currentProfile?.skills}
           </p>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
 
       {currentUser?.accountType === "student" ? (

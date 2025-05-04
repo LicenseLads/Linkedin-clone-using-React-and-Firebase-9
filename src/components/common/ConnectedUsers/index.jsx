@@ -17,7 +17,7 @@ export default function ConnectedUsers({ user, getCurrentUser, currentUser }) {
 
       <button onClick={() => getCurrentUser(user.id)}>
         <AiOutlineUsergroupAdd size={20} />
-        Connect
+        Adaugă conexiune
       </button>
     </div>
   );

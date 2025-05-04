@@ -9,9 +9,11 @@ import {
   updateComment,
 } from "../../../api/FirestoreAPI";
 import "./index.scss";
-import defaultUserImage from '../../../assets/user.png';
-
-
+import { getUserPhotoURL } from "../../../api/FirestoreAPI";
+import { getUserPhotoURLByName } from "../../../api/FirestoreAPI";
+import { doc, getDoc } from "firebase/firestore"; // ✅ rezolvă getDoc undefined
+import { firestore } from "../../../firebaseConfig"; // dacă nu ai deja
+import defaultUserImage from "../../../assets/user.png"; // ✅ rezolvă defaultUserImage undefined
 
 const formatDate = (timestamp) => {
   const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
@@ -41,11 +43,44 @@ const CommentsScrollSection = ({
   const [isEditing, setIsEditing] = useState(false);
   const [hasReview, setHasReview] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
+  const [photoURLs, setPhotoURLs] = useState({});
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const urls = {};
+      for (const comment of comments) {
+        if (comment.authorId && !photoURLs[comment.authorId]) {
+          try {
+            const snap = await getDoc(
+              doc(firestore, "users", comment.authorId)
+            );
+            if (snap.exists()) {
+              urls[comment.authorId] =
+                snap.data().imageLink || defaultUserImage;
+            } else {
+              urls[comment.authorId] = defaultUserImage;
+            }
+          } catch (err) {
+            console.error("Eroare la încărcarea imaginii:", err);
+            urls[comment.authorId] = defaultUserImage;
+          }
+        }
+      }
+      setPhotoURLs((prev) => ({ ...prev, ...urls }));
+    };
+
+    if (comments.length > 0) {
+      loadImages();
+    }
+  }, [comments]);
 
   useEffect(() => {
     const checkExistingReview = async () => {
       if (currentUserRole === "teacher") {
-        const existing = await getCommentsByProjectAndUser(entryId, currentUserName);
+        const existing = await getCommentsByProjectAndUser(
+          entryId,
+          currentUserName
+        );
         if (existing.length > 0) {
           setExistingReview(existing[0]);
           setHasReview(true);
@@ -60,9 +95,9 @@ const CommentsScrollSection = ({
     };
     checkExistingReview();
   }, [entryId, currentUserName, currentUserRole]);
-  
 
   const handleAddOrUpdateComment = async () => {
+    console.log("Am intrat");
     if (currentUserRole !== "teacher") {
       toast.error("Doar profesorii pot posta recenzii.");
       return;
@@ -89,15 +124,19 @@ const CommentsScrollSection = ({
         return;
       }
 
+      const photoURL =
+        (await getUserPhotoURLByName(currentUserName)) || defaultUserImage;
       const commentEntry = {
         comment: commentInput,
         name: currentUserName,
         projectId: entryId,
-        authorId: currentUserId ,
+        authorId: currentUserId,
         timeStamp: new Date(),
         rating: ratingValue,
-        photoURL: currentUserPhotoURL,
+        photoURL: photoURL,
       };
+
+      console.log(commentEntry);
 
       if (isEditing && existingReview) {
         await updateComment(existingReview.id, commentEntry);
@@ -113,6 +152,7 @@ const CommentsScrollSection = ({
       setRatingInput("");
       setIsEditing(false);
     } catch (error) {
+      console.log(error);
       toast.error("A apărut o eroare. Vă rugăm să încercați din nou.");
     }
   };
@@ -169,15 +209,18 @@ const CommentsScrollSection = ({
           comments.slice(0, visibleComments).map((comment, index) => (
             <div key={index} className="comment">
               <div className="flex flex-col w-full">
-                <div className="flex items-center justify-between mb-1">
-                <img
-                  src={comment.photoURL || "../../../assets/default-user.png"} // fallback dacă nu există imagine
-                  alt={comment.name}
-                  onClick={() => navigate(`/profile?id=${comment.name}`)}
-                                
-                  className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
-                />
-                  
+                <div
+                  className="project-author-info"
+                  onClick={() => navigate(`/profile?id=${comment.authorId}`)}
+                >
+                  <img
+                    src={photoURLs[comment.authorId] || defaultUserImage}
+                    alt={comment.name}
+                    className="project-author-avatar"
+                  />
+                  <span className="project-author-name">
+                    {comment.name || "Autor necunoscut"}
+                  </span>
                   <div className="flex gap-1">
                     {Array.from({ length: 10 }).map((_, i) => (
                       <span
@@ -191,28 +234,34 @@ const CommentsScrollSection = ({
                     ))}
                   </div>
                 </div>
-                <p className="text-sm text-gray-700 mb-1">{comment.comment}</p>
-                <p className="text-xs text-gray-500 italic">
-                  {formatDate(comment.timeStamp)}
-                </p>
+
+                <div className="comment-body">
+                  <p className="text-sm text-gray-700 mb-1">
+                    {comment.comment}
+                  </p>
+                  <p className="text-xs text-gray-500 italic">
+                    {formatDate(comment.timeStamp)}
+                  </p>
+
+                  {currentUserRole === "teacher" &&
+                    comment.name === currentUserName && (
+                      <div className="comment-actions">
+                        <FaEdit
+                          onClick={() => handleEdit(comment)}
+                          className="cursor-pointer hover:opacity-70"
+                          title="Editează"
+                          size={22}
+                        />
+                        <FaTrash
+                          onClick={handleDelete}
+                          className="cursor-pointer hover:opacity-70"
+                          title="Șterge"
+                          size={22}
+                        />
+                      </div>
+                    )}
+                </div>
               </div>
-              {currentUserRole === "teacher" &&
-                comment.name === currentUserName && (
-                  <div className="flex gap-3 text-primary">
-                    <FaEdit
-                      onClick={() => handleEdit(comment)}
-                      className="cursor-pointer hover:opacity-70"
-                      title="Editează"
-                      size={22}
-                    />
-                    <FaTrash
-                      onClick={handleDelete}
-                      className="cursor-pointer hover:opacity-70"
-                      title="Șterge"
-                      size={22}
-                    />
-                  </div>
-                )}
             </div>
           ))
         )}
@@ -224,7 +273,7 @@ const CommentsScrollSection = ({
       </div>
 
       {currentUserRole === "teacher" && (isEditing || !hasReview) && (
-        <div className="comment-form mt-4">
+        <div className="comment-form mt-12">
           <label className="font-bold text-gray-800 text-xl mb-2 block">
             Recenzie proiect:
           </label>

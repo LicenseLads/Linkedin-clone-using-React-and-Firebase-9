@@ -235,19 +235,38 @@ export const editProfile = (userID, payload) => {
     });
 };
 
-export const likePost = async (postId, liked) => {
-  const userId = await getFirestoreUserId();
+export const likePost = async (userId, postId, alreadyLiked) => {
+  if (!userId || !postId) return;
+
+  const likeDocRef = doc(likeRef, `${userId}_${postId}`);
+
   try {
-    let docToLike = doc(likeRef, `${userId}_${postId}`);
-    if (liked) {
-      deleteDoc(docToLike);
+    if (alreadyLiked) {
+      await deleteDoc(likeDocRef);
     } else {
-      setDoc(docToLike, { userId, postId });
+      await setDoc(likeDocRef, {
+        userId,
+        postId,
+        timestamp: new Date(),
+      });
     }
   } catch (err) {
-    console.log(err);
+    console.error("Eroare la like/unlike:", err);
   }
 };
+
+export const isPostLikedByUser = async (userId, postId) => {
+  const likeDocRef = doc(likeRef, `${userId}_${postId}`);
+  const snapshot = await getDoc(likeDocRef);
+  return snapshot.exists();
+};
+
+export const getLikesCount = async (postId) => {
+  const q = query(likeRef, where("postId", "==", postId));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.length;
+};
+
 
 export const getLikesByUser = (userId, postId, setLiked, setLikesCount) => {
   try {
@@ -361,6 +380,52 @@ export const getProjectById = async (id) => {
 export const updateProjectById = async (projectId, projectData) => {
   const projectDoc = doc(projectsRef, projectId);
   await updateDoc(projectDoc, projectData);
+};
+
+export const getUserPhotoURL = async (userId) => {
+  try {
+    const userDoc = doc(firestore, "users", userId);
+    const userSnapshot = await getDoc(userDoc);
+
+    if (userSnapshot.exists()) {
+      const userData = userSnapshot.data();
+      return userData.photoURL || "";
+    } else {
+      console.warn("Utilizatorul nu a fost găsit în Firestore:", userId);
+      return "";
+    }
+  } catch (error) {
+    console.error("Eroare la obținerea imaginii de profil:", error);
+    return "";
+  }
+};
+
+/**
+ * Caută imaginea de profil a utilizatorului după `name`
+ * @param {string} name - Numele utilizatorului (unic)
+ * @returns {Promise<string>} - URL imagine sau fallback gol
+ */
+export const getUserPhotoURLByName = async (name) => {
+  try {
+    console.log("Caut utilizator cu numele:", name);
+    const userQuery = query(
+      collection(firestore, "users"),
+      where("name", "==", name)
+    );
+    const querySnapshot = await getDocs(userQuery);
+
+    if (!querySnapshot.empty) {
+      const userData = querySnapshot.docs[0].data();
+      console.log("User găsit:", userData);
+      return userData.photoURL || "";
+    } else {
+      console.warn(`Niciun utilizator găsit cu numele: ${name}`);
+      return "";
+    }
+  } catch (error) {
+    console.error("Eroare la căutarea imaginii după nume:", error);
+    return "";
+  }
 };
 
 // Append new function without deleting any existing ones:

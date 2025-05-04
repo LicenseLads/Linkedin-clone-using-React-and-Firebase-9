@@ -18,7 +18,7 @@ export default function CategorySwitch({ activeOption, setActiveOption }) {
           }}
           onClick={() => handleSwitchClick("posts")}
         >
-          <div className="switch-text">Posts</div>
+          <div className="switch-text">Postări</div>
         </div>
         <div
           className="switch-item"
@@ -29,7 +29,7 @@ export default function CategorySwitch({ activeOption, setActiveOption }) {
           }}
           onClick={() => handleSwitchClick("projects")}
         >
-          <div className="switch-text">Projects</div>
+          <div className="switch-text">Proiecte</div>
         </div>
       </div>
     </div>

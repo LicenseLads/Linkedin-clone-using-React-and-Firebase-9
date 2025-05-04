@@ -17,7 +17,15 @@ export default function MessagesComponent({ currentUser }) {
       setConnections(filtered);
     });
   }, [currentUser]);
-
+  useEffect(() => {
+    if (location?.state?.selectedUserId && connections.length > 0) {
+      const found = connections.find(u => u.id === location.state.selectedUserId);
+      if (found) {
+        setSelectedUser(found);
+      }
+    }
+  }, [connections, location?.state?.selectedUserId]);
+  
   useEffect(() => {
     if (unsubscribeRef.current) {
       unsubscribeRef.current();
@@ -135,7 +143,7 @@ export default function MessagesComponent({ currentUser }) {
             onClick={() => selectConversation(connection)}
           >
             <img
-              src={connection.imageLink || "/images/default-user.png"}
+              src={connection.imageLink || "https://storage.googleapis.com/meraki-photos/profile/default-user.webp"}
               alt="profile"
               className="connection-avatar"
             />
@@ -151,7 +159,7 @@ export default function MessagesComponent({ currentUser }) {
           <>
             <div className="chat-header">
               <img
-                src={selectedUser.imageLink || "/images/default-user.png"}
+                src={selectedUser.imageLink || "https://storage.googleapis.com/meraki-photos/profile/default-user.webp"}
                 alt="Selected Profile"
                 className="chat-header-avatar"
               />
@@ -178,7 +186,7 @@ export default function MessagesComponent({ currentUser }) {
                           <img
                             src={
                               selectedUser.imageLink ||
-                              "/images/default-user.png"
+                              "https://storage.googleapis.com/meraki-photos/profile/default-user.webp"
                             }
                             alt="Avatar"
                             className="message-avatar"

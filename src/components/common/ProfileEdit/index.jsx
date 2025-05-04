@@ -39,7 +39,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
         </div>
 
         <div className="profile-edit-inputs">
-          <label>Name</label>
+          <label>Nume</label>
           <input
             onChange={getInput}
             className="common-input"
@@ -53,7 +53,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
               setState(null);
               setCity(null);
             }}
-            placeHolder="Select Country"
+            placeHolder="Selectează Țara"
             value={country}
             defaultValue={country}
           />
@@ -63,7 +63,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
               setState(e);
               setCity(null);
             }}
-            placeHolder="Select State"
+            placeHolder="Selectează Județul/Statul"
             disabled={!country || !country.hasStates}
           />
           <CitySelect
@@ -72,10 +72,10 @@ export default function ProfileEdit({ onEdit, currentUser }) {
             onChange={(e) => {
               setCity(e);
             }}
-            placeHolder="Select City"
+            placeHolder="Selectează orașul"
             disabled={!state || !state.hasCities}
           />
-          <label>Company</label>
+          <label>Companie</label>
           <input
             onChange={getInput}
             className="common-input"
@@ -83,7 +83,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
             value={editInputs.company}
             name="company"
           />
-          <label>Industry </label>
+          <label>Industrie </label>
           <input
             onChange={getInput}
             className="common-input"
@@ -107,7 +107,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
             name="website"
             value={editInputs.website}
           />
-          <label>About</label>
+          <label>Despre mine</label>
           <textarea
             placeholder="About Me"
             className="common-textarea"
@@ -116,7 +116,7 @@ export default function ProfileEdit({ onEdit, currentUser }) {
             name="about"
             value={editInputs.about}
           />
-          <label>Skills</label>
+          <label>Abilitati</label>
           <input
             onChange={getInput}
             className="common-input"

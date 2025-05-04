@@ -25,6 +25,23 @@ body {
   margin: 40px auto;
   padding: 0 16px;
 }
+.comment-body {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment-body p {
+  margin: 0;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
 
 .comment-section {
   margin-top: 24px;
@@ -108,6 +125,7 @@ body {
 }
 
 .comment-form {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -188,4 +206,41 @@ body {
 .load-more:hover {
   background-color: var(--primary-color);
   opacity: 0.9;
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-author-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-author-name {
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 16px;
+    padding-bottom: 4px;
+  }
+}
+
+.project-author-avatar:hover {
+  transform: scale(1.05);
+}
+
+.project-title {
+  padding: 0px 20px;
+  text-transform: uppercase;
 }

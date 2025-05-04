@@ -37,32 +37,32 @@ export default function Topbar({ currentUser }) {
             size={28}
             className="react-icon"
             onClick={() => goToRoute("/home")}
-            title="Home"
+            title="Acasă"
           />
           <AiOutlineUserSwitch
             size={28}
             className="react-icon"
             onClick={() => goToRoute("/connections")}
-            title="Connections"
+            title="Conexiuni"
           />
           <BsBriefcase
             size={26}
             className="react-icon"
             onClick={() => goToRoute("/projects")}
-            title="Projects"
+            title="proiecte"
           />
           <AiOutlineMessage
             size={28}
             className="react-icon"
             onClick={() => goToRoute("/messages")}
-            title="Messages"
+            title="Mesaje"
           />
         </div>
       </div>
 
       <img
         className="user-logo"
-        src={currentUser?.imageLink || "/images/default-user.png"}
+        src={currentUser?.imageLink || "https://storage.googleapis.com/meraki-photos/profile/default-user.webp"}
         alt="user"
         onClick={displayPopup}
         title="Profilul meu"

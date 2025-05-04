@@ -96,7 +96,7 @@
     text-align: center;
     white-space: nowrap;
     user-select: none;
-    box-shadow: 0 2px 4px #B2998A;
+    box-shadow: 0 2px 4px #b2998a;
   }
 
   .location {
@@ -128,24 +128,40 @@
     text-align: center;
   }
   .stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .stat-number {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
   }
   .stat-label {
-      font-size: 14px;
-      color: #666;
+    font-size: 14px;
+    color: #666;
   }
 
   .profile-avatar-section {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 16px
+    gap: 16px;
   }
+}
+.connect-button,
+.chat-button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.connect-button:hover,
+.chat-button:hover {
+  filter: brightness(0.9);
 }
