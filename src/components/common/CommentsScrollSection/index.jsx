@@ -82,7 +82,7 @@ const CommentsScrollSection = ({
     try {
       const existing = await getCommentsByProjectAndUser(
         entryId,
-        currentUserName
+        currentUserId
       );
       if (existing.length > 0 && !isEditing) {
         toast.error("Ai adăugat deja o recenzie pentru acest proiect.");
@@ -173,7 +173,7 @@ const CommentsScrollSection = ({
                 <img
                   src={comment.photoURL || "../../../assets/default-user.png"} // fallback dacă nu există imagine
                   alt={comment.name}
-                  onClick={() => navigate(`/profile?id=${comment.name}`)}
+                  onClick={() => navigate(`/profile?id=${comment.authorId}`)}
                                 
                   className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-sm"
                 />
