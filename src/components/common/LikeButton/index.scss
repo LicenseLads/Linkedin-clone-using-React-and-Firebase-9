@@ -31,6 +31,7 @@
 
   .hr-line {
     margin: -10px 0 0;
+
     hr {
       border: none;
       border-top: 1px solid var(--border-color);
@@ -38,40 +39,53 @@
   }
 
   .like-comment {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 12px;
     margin-top: 8px;
 
     .likes-comment-inner {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       cursor: pointer;
-      padding: 8px 16px;
+      padding: 8px 0;
+      border: 1px solid transparent;
       border-radius: 30px;
       transition: var(--transition);
 
       &:hover {
         background-color: var(--background-color);
-        color: white;
+        border-color: var(--primary-color);
+
+        svg {
+          color: var(--surface-color);
+        }
+
+        p {
+          color: var(--surface-color);
+        }
+      }
+
+      &.active {
+        background-color: var(--background-color);
+        border-color: var(--primary-color);
+
+        svg, p {
+          color: var(--surface-color);
+        }
       }
 
       svg {
         transition: var(--transition);
+        color: var(--text-color);
       }
 
       p {
         font-size: 16px;
         font-weight: 600;
         margin: 0;
-        color: var(--text-color);
-      }
-
-      .blue {
-        color: var(--primary-color);
-      }
-
-      .black {
         color: var(--text-color);
       }
     }
@@ -94,8 +108,9 @@
     }
 
     &:focus {
-      outline: 1px solid var(--primary-color);
-      background-color: white;
+      outline: none;
+      border-color: var(--primary-color);
+      background-color: #ffffff;
     }
   }
 
@@ -103,19 +118,22 @@
     width: fit-content;
     padding: 10px 20px;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--surface-color);
     font-size: 14px;
     font-weight: 500;
-    border: none;
+    border: 1px solid transparent;
     border-radius: var(--radius);
     cursor: pointer;
     margin-top: 12px;
     transition: var(--transition);
-
+  
     &:hover {
-      background-color: #384358;
+      background-color: var(--primary-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      filter: brightness(0.9);
     }
   }
+  
 
   .all-comments {
     background-color: var(--background-color);
@@ -128,14 +146,13 @@
 
     .name {
       font-weight: 600;
-      color: white;
       margin-bottom: 6px;
     }
 
     .comment {
       font-size: 15px;
       line-height: 1.4;
-      color: black;
+      color: #fff;
       margin-bottom: 6px;
     }
 

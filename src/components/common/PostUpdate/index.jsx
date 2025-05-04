@@ -67,7 +67,7 @@ export default function PostStatus({ currentUser }) {
             setIsEdit(false);
           }}
         >
-          Start a Post
+          Creaza o Postare
         </button>
       </div>
 
