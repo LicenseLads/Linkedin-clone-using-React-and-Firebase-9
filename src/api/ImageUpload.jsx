@@ -9,30 +9,26 @@ export const uploadImage = (
   setProgress,
   setCurrentImage
 ) => {
-  const profilePicsRef = ref(storage, `profileImages/${file.name}`);
-  const uploadTask = uploadBytesResumable(profilePicsRef, file);
+  console.log(file);
 
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress = Math.round(
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      );
-
-      setProgress(progress);
+  fetch(`https://storage.googleapis.com/meraki-photos/profile/${file.name}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': file.type,
     },
-    (error) => {
-      console.error(err);
-    },
-    () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((response) => {
-        editProfile(id, { imageLink: response });
-        setModalOpen(false);
-        setCurrentImage({});
-        setProgress(0);
-      });
+    body: file
+  }).then((response) => {
+    if (response.ok) {
+      console.log('File uploaded successfully');
+      const publicUrl = `https://storage.googleapis.com/meraki-photos/profile/${file.name}`;
+      editProfile(id, { imageLink: publicUrl });
+      setModalOpen(false);
+      setCurrentImage({});
+      setProgress(0);
+    } else {
+      console.error('Error uploading file:', response.statusText);
     }
-  );
+  });
 };
 
 export const uploadPostImage = (file, setPostImage, setProgress) => {
