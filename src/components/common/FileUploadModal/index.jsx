@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Modal, Progress } from "antd";
 import "./index.scss";
 
@@ -10,6 +10,10 @@ export default function FileUploadModal({
   currentImage,
   progress,
 }) {
+  useEffect(() => {
+    console.log("enters here!");
+  }, []);
+
   return (
     <div>
       <Modal

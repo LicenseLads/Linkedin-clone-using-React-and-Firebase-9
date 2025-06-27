@@ -23,11 +23,15 @@ import { auth } from "../../../firebaseConfig";
 export default function ProfileCard({ onEdit, currentUser }) {
   const [canEdit, setCanEdit] = useState(false);
 
-  onAuthStateChanged(auth, (res) => {
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (res) => {
     if (res.email === currentUser.email) {
       setCanEdit(true);
     }
   });
+
+  return () => unsubscribe();
+}, [auth, currentUser.email]);
 
   const [allStatuses, setAllStatus] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
@@ -126,7 +130,11 @@ export default function ProfileCard({ onEdit, currentUser }) {
             <div className="profile-avatar-section">
               <img
                 className="profile-image"
-                onClick={() => setModalOpen(true)}
+                onClick={() => {
+                  if (canEdit) {
+                    setModalOpen(true);
+                  }
+                }}
                 src={
                   Object.values(currentProfile).length === 0
                     ? currentUser.imageLink
